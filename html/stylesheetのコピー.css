@@ -1,0 +1,23 @@
+#layout {
+    position: static;
+}
+#layout1 {
+    position: relative;
+    top: 20px;
+    background-color: red;
+}
+#layout2 {
+    position: relative;
+    left: 20px;
+    background-color: yellow;
+}
+#layout3 {
+    position: relative;
+    right: -20px;
+    background-color: blue;
+}
+#layout4 {
+    position: relative;
+    bottom: 20px;
+    background-color: gray;
+}

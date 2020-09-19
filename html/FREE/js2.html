@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>LMS4-2課題</title>
+</head>
+<body>
+<script>
+/*動物の「鳴き声アプリ」を作ってみましょう。任意の動物名を指定すると、その鳴き声が文字列としてコンソールログに出力されるプログラムです。
+今回の課題では、以下の動物を対象にしてコードを書きます。
+犬（ワンワン！）
+猫（にゃーん！）
+牛（モー！）
+ライオン（ガオー！）
+豚（ブー！）*/
+
+const animal = ['犬','猫','牛', 'ライオン','豚'];
+
+      animal.forEach(name => {
+        if(name == '犬') {
+
+          console.log('ワンワン！');
+
+        } else if(name === '猫') {
+
+          console.log('にゃーん！');
+
+        } else if(name === '牛') {
+
+          console.log('モー！');
+
+        } else {
+          console.log('ブー！');
+        }
+      })
+
+
+
+</script>
+
+</body>
+</html>
