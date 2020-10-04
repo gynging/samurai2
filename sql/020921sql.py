@@ -7,20 +7,21 @@ c.execute("INSERT INTO mydrinkcount VALUES ('コーラ','1')")
 c.execute("select * from mydrinkcount where buycount = '1'")
 d = c.fetchone()
 print(d)
-e = d[1]
+
+"""
+e = 2
 print(e)
-c.execute("update mydrinkcount set buyconut=? where drinkkind=?",(e,d[1]))
+c.execute("update mydrinkcount set buycount=? where drinkkind=?",(e,d[0]))
 c.execute("select * from mydrinkcount where drinkkind = 'コーラ'")
 print(c.fetchone())
 dbfile2.commit()
 dbfile2.close()
 """
-dbfile = sqlite3.connect('zannsuu.db')
-c = dbfile.cursor()
-#c.execute("create table vendingcount(vendingdrinkkind,count)")
-c.execute("INSERT INTO vendingcount VALUES ('コーラ',1)")
-c.execute("select * from vendingcount where vendingdrinkkind = 'コーラ'")
-print(c.fetchone())
-dbfile.commit()
-dbfile.close()
-"""
+
+c.execute("create table zihannkicount(drinkkind,buycount)")
+c.execute("INSERT INTO  zihannkicount VALUES ('コーラ','10')")
+c.execute("INSERT INTO zihannkicount VALUES ('ソーダ','10')")
+c.execute("INSERT INTO zihannkicount VALUES ('オレンジジュース','10')")
+dbfile2.commit()
+dbfile2.close()
+
