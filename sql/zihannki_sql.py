@@ -55,9 +55,12 @@ class Zihan:
                         f = int(d[1]) - 1
                         c.execute("update zihannkicount set buycount=? where drinkkind=?", (f, self.kin))
                         c.execute("select * from mydrinkcount where drinkkind = ?", (self.kin,))
-                        g = c.fetchone()
+                        g = c.fetchone() 
                         h = int(g[1]) + 1
                         c.execute("update mydrinkcount set buycount=? where drinkkind=?", (h, self.kin))
+                        c.execute("select * from mydrinkcount where drinkkind = ?",(self.kin,))
+                        i = c.fetchone()
+                        print("{0}の購入数はこれで{1}個目です".format(self.kin,i[1]))
                     else:
                         self.sagaku = self.zyusu[self.kin] - self.kig
                         print("お金が{}円足りません。".format(self.sagaku))
@@ -66,7 +69,7 @@ class Zihan:
             else:
                 print("在庫がありません")
         else:
-            print("該当商品が有りません。")
+            print("売り切れです")
 
     def tudukemasuka(self):
         self.modoru = None
