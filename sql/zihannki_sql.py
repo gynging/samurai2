@@ -4,20 +4,18 @@ import sqlite3
 dbfile2 = sqlite3.connect('zibunnkannri.db')
 c = dbfile2.cursor()
 """
-以前作成した自動販売機プログラムにてSQLを使用して、
-改良してください。
-用意するデータベースは二つ
-一つは自販機の飲み物の残数などを設定するデータベース
-もう一つは自分で購入した飲み物を管理するデータベース
-飲み物に数量を設定し、
-毎回買うごとに自動販売機のストック数から-1し、
-自分で購入した履歴を持つデータベースには購入数 +1を行う。
-自動販売機のストック数がない場合は
-「売り切れです」
-のようにメッセージを出力するようにする。
-購入できた場合、
-「XXXの購入数これでX個目です」
-のように出力する。
+メニュー画面を作成
+　メニュー内容
+　　・自動販売機飲み物購入機能
+　　　→ 今まで課題で作成した自動販売機プログラム搭載
+　　・販売機編集
+　　　→ 以下機能を含んでいる
+　　　　　1 自動販売機飲み物個数追加機能
+　　　　　　→ 既存の飲み物の個数をユーザーが指定した個数に追加できる
+　　　　　2 自動販売機飲み物種類追加機能
+　　　　　　→ 既存の飲み物に加えて新しい種類の飲み物を買えるようにする
+　　　　　3 自動販売機飲み物種類削除機能
+　　　　　　→ 既存の飲み物をユーザーが任意に削除できるようにする
 """
 
 class Zihan:
@@ -30,12 +28,85 @@ class Zihan:
         self.yesno = None
         self.modoru = None
         self.owariflag = None
+        self.menukind = None
+        self.menukist = None
+        self.choice = None
+        self.choicekind = None
+        self.choicemenu = None
+        self.add = None
+        self.kind = None
+        self.newkind = None
+        self.deletedrink = None
+        self.editlist = None
+        self.editlist2 = None
+        self.control1 = None
+        self.control2 = None
 
+    def menu(self):
+        self.menukind = ["1:自動販売機飲み物購入機能","2:販売機編集"]
+        for self.menulist in self.menukind:
+            print(self.menulist)
+
+        while self.control1 == None:
+            self.choicemenu = int(input("どちらかを数字で選んで下さい"))
+            if self.choicemenu == 1:
+                zihann.say_nomitaimono()
+                zihann.tudukemasuka()
+                self.control1 == 1
+
+
+            elif self.choicemenu == 2:
+                self.control1 == 1
+                self.editlist = ["1 自動販売機飲み物個数追加機能","2 自動販売機飲み物種類追加機能","3 自動販売機飲み物種類削除機能"]
+                for self.editlist2 in self.editlist:
+                    print(self.editlist2)
+                    while self.control2 == None:
+                        self.editcommnd = int(input("1か2か3で選んで下さい"))
+                        if self.editcommnd == 1:
+                            self.control2 = 1
+                            zihann.addrink()
+
+
+                        elif self.editcommnd == 2:
+                            zihann.addkind()
+                            self.control2 = 1
+
+                        elif self.editcommnd == 3:
+                            zihann.editdrink()
+                            self.control2 = 1
+                        else:
+                            continue
+            else:
+                print("1か2で選んで下さい。")
+
+
+
+    def addrink(self):
+        self.add = str(input("どの飲み物を追加しますか？"))
+        c.execute("select * from zihannkicount where drinkkind = ? ", (self.add,))
+        m = c.fetchone()
+        n = int(m[1]) + 1
+        c.execute("update zihannkicount set buycount=? where drinkkind=?", (n, self.add))
+
+    def addkind(self):
+        self.newkind = str(input("なんという飲み物を追加しますか？"))
+        c.execute("insert into zihannkicount values ('self.newkind','10')")
+        c.execute("select * from zihannkicount")
+        d = c.fetchall()
+        print(d)
+
+    def editdrink(self):
+        self.deletedrink = str(input("なんという飲み物を消去しますか？"))
+        c.execute("delete from zihannkicount where drinkkind = ?",(self.deletedrink))
+        c.execute("select * from zihannkicount")
+        d = c.fetchall()
+        print(d)
 
     def say_zyusu(self):
         print("コーラは100円です。ソーダは150円です。オレンジジュースは300円です。")
 
     def say_nomitaimono(self):
+        print("コーラは100円です。ソーダは150円です。オレンジジュースは300円です。")
         self.kin = str(input("飲みたいものを入力してください"))
         self.zyusu = {"コーラ":100,"ソーダ":150,"オレンジジュース":300}
 
@@ -86,6 +157,7 @@ class Zihan:
                 self.owariflag = 1
                 self.modoru = 1
 
+
             else:
                 print("yesかnoで入力して下さい")
 
@@ -94,14 +166,13 @@ zihann = Zihan()
 
 while zihann.owariflag == None:
 
-    zihann.say_zyusu()
-
-    zihann.say_nomitaimono()
+    zihann.menu()
 
     zihann.tudukemasuka()
 
 dbfile2.commit()
 dbfile2.close()
+
 
 
 
