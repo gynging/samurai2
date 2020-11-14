@@ -41,9 +41,10 @@ class Zihan:
         self.editlist2 = None
         self.control1 = None
         self.control2 = None
+        self.menuback = None
 
     def menu(self):
-        self.menukind = ["1:自動販売機飲み物購入機能","2:販売機編集"]
+        self.menukind = ["1:自動販売機飲み物購入機能", "2:販売機編集"]
         for self.menulist in self.menukind:
             print(self.menulist)
 
@@ -51,33 +52,47 @@ class Zihan:
             self.choicemenu = int(input("どちらかを数字で選んで下さい"))
             if self.choicemenu == 1:
                 zihann.say_nomitaimono()
-                zihann.tudukemasuka()
-                self.control1 == 1
-
+                self.control1 = 1
 
             elif self.choicemenu == 2:
-                self.control1 == 1
-                self.editlist = ["1 自動販売機飲み物個数追加機能","2 自動販売機飲み物種類追加機能","3 自動販売機飲み物種類削除機能"]
+                self.control1 = 1
+                self.editlist = ["1 自動販売機飲み物個数追加機能", "2 自動販売機飲み物種類追加機能", "3 自動販売機飲み物種類削除機能"]
                 for self.editlist2 in self.editlist:
                     print(self.editlist2)
-                    while self.control2 == None:
-                        self.editcommnd = int(input("1か2か3で選んで下さい"))
-                        if self.editcommnd == 1:
-                            self.control2 = 1
-                            zihann.addrink()
 
+                while self.control2 == None:
+                    self.editcommnd = int(input("1か2か3で選んで下さい"))
 
-                        elif self.editcommnd == 2:
-                            zihann.addkind()
-                            self.control2 = 1
+                    if self.editcommnd == 1:
+                        self.control2 = 1
+                        self.control1 = 1
+                        zihann.addrink()
+                        zihann.end()
 
-                        elif self.editcommnd == 3:
-                            zihann.editdrink()
-                            self.control2 = 1
-                        else:
-                            continue
+                    elif self.editcommnd == 2:
+                        self.control2 = 1
+                        self.control1 = 1
+                        zihann.end()
+
+                    elif self.editcommnd == 3:
+                        self.control2 = 1
+                        self.control1 = 1
+                        zihann.editdrink()
+                        zihann.end()
+
+                    else:
+                        continue
             else:
                 print("1か2で選んで下さい。")
+
+    def end(self):
+        self.menuback = str(input("menuに戻りますか？yesかnoで答えてください"))
+
+        if self.menuback == "yes":
+                zihann.menu()
+
+        elif self.menuback == "no":
+            print("お疲れ様でした。")
 
 
 
@@ -87,13 +102,15 @@ class Zihan:
         m = c.fetchone()
         n = int(m[1]) + 1
         c.execute("update zihannkicount set buycount=? where drinkkind=?", (n, self.add))
+        print(self.add + "を1本追加しました。")
 
     def addkind(self):
         self.newkind = str(input("なんという飲み物を追加しますか？"))
         c.execute("insert into zihannkicount values ('self.newkind','10')")
-        c.execute("select * from zihannkicount")
+        c.execute("update zihannkicount set buycount=? where drinkkind=?,(self.newkind)")
         d = c.fetchall()
         print(d)
+        print("self.newkind""を10本追加しました。")
 
     def editdrink(self):
         self.deletedrink = str(input("なんという飲み物を消去しますか？"))
@@ -141,6 +158,9 @@ class Zihan:
                 print("在庫がありません")
         else:
             print("売り切れです")
+        zihann.tudukemasuka()
+
+
 
     def tudukemasuka(self):
         self.modoru = None
@@ -151,10 +171,10 @@ class Zihan:
             if self.yesno == "yes":
                 os.system('clear')
                 self.modoru = 1
+                zihann.say_nomitaimono()
 
             elif self.yesno == "no":
                 print("お疲れ様でした")
-                self.owariflag = 1
                 self.modoru = 1
 
 
@@ -164,11 +184,7 @@ class Zihan:
 
 zihann = Zihan()
 
-while zihann.owariflag == None:
-
-    zihann.menu()
-
-    zihann.tudukemasuka()
+zihann.menu()
 
 dbfile2.commit()
 dbfile2.close()
