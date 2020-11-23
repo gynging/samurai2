@@ -50,7 +50,7 @@ class Zihan:
 
         while self.control1 == None:
             self.choicemenu = int(input("どちらかを数字で選んで下さい"))
-            print("debug self.choicemenu = {}".format(self.choicemenu))
+            #print("debug self.choicemenu = {}".format(self.choicemenu))
             if self.choicemenu == 1:
                 zihann.say_nomitaimono()
                 self.control1 = 1
@@ -120,7 +120,7 @@ class Zihan:
     def addkind(self):
         self.newkind = str(input("なんという飲み物を追加しますか？"))
         c.execute("insert into zihannkicount values ('self.newkind','10')")
-        c.execute("update zihannkicount set buycount=? where drinkkind=?,(self.newkind)")
+        c.execute("update zihannkicount　where drinkkind=?,(self.newkind)")
         print(self.newkind + "を10本追加しました。")
 
     def editdrink(self):
