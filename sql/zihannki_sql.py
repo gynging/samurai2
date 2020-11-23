@@ -50,37 +50,31 @@ class Zihan:
 
         while self.control1 == None:
             self.choicemenu = int(input("どちらかを数字で選んで下さい"))
+            print("debug self.choicemenu = {}".format(self.choicemenu))
             if self.choicemenu == 1:
                 zihann.say_nomitaimono()
                 self.control1 = 1
 
             elif self.choicemenu == 2:
-                self.control1 = 1
                 self.editlist = ["1 自動販売機飲み物個数追加機能", "2 自動販売機飲み物種類追加機能", "3 自動販売機飲み物種類削除機能"]
                 for self.editlist2 in self.editlist:
                     print(self.editlist2)
 
-                while self.control2 == None:
-                    self.editcommnd = int(input("1か2か3で選んで下さい"))
+                self.editcommnd = int(input("1か2か3で選んで下さい"))
 
-                    if self.editcommnd == 1:
-                        self.control2 = 1
-                        self.control1 = 1
-                        zihann.addrink()
-                        zihann.end()
+                if self.editcommnd == 1:
+                    zihann.addrink()
+                    zihann.end()
 
-                    elif self.editcommnd == 2:
-                        self.control2 = 1
-                        self.control1 = 1
-                        zihann.end()
+                elif self.editcommnd == 2:
+                    zihann.addkind()
+                    zihann.end()
 
-                    elif self.editcommnd == 3:
-                        self.control2 = 1
-                        self.control1 = 1
-                        zihann.editdrink()
-                        zihann.end()
+                elif self.editcommnd == 3:
+                    zihann.editdrink()
+                    zihann.end()
 
-                    else:
+                else:
                         continue
             else:
                 print("1か2で選んで下さい。")
@@ -92,25 +86,42 @@ class Zihan:
                 zihann.menu()
 
         elif self.menuback == "no":
+            self.control1 = 1
             print("お疲れ様でした。")
 
 
-
     def addrink(self):
-        self.add = str(input("どの飲み物を追加しますか？"))
-        c.execute("select * from zihannkicount where drinkkind = ? ", (self.add,))
-        m = c.fetchone()
-        n = int(m[1]) + 1
-        c.execute("update zihannkicount set buycount=? where drinkkind=?", (n, self.add))
-        print(self.add + "を1本追加しました。")
+        c.execute("select * from zihannkicount")
+        o = c.fetchall()
+        for i in o:
+            print("{}:{}本".format(i[0], i[1]))
+        repetition = None
+        while repetition == None:
+            self.add = str(input("どの飲み物を追加しますか？"))
+            c.execute("select * from zihannkicount where drinkkind = ? ", (self.add,))
+            m = c.fetchone()
+            #print("m = {}".format(m))
+            if m == None:
+                print("入力した飲み物は存在しません。")
+            else:
+                repetition2 = None
+                while repetition2 == None:
+                    try:
+                        count = int(input("何本追加しますか？"))
+                        newcount = m[1]
+                        newcount = newcount + count
+                        c.execute("update zihannkicount set buycount=? where drinkkind=?", (newcount, self.add))
+                        print("{}が{}本になりました。".format(self.add,newcount))
+                        repetition = 1
+                        repetition2 = 1
+                    except ValueError:
+                        print("数値を入力してください。")
 
     def addkind(self):
         self.newkind = str(input("なんという飲み物を追加しますか？"))
         c.execute("insert into zihannkicount values ('self.newkind','10')")
         c.execute("update zihannkicount set buycount=? where drinkkind=?,(self.newkind)")
-        d = c.fetchall()
-        print(d)
-        print("self.newkind""を10本追加しました。")
+        print(self.newkind + "を10本追加しました。")
 
     def editdrink(self):
         self.deletedrink = str(input("なんという飲み物を消去しますか？"))
@@ -118,9 +129,6 @@ class Zihan:
         c.execute("select * from zihannkicount")
         d = c.fetchall()
         print(d)
-
-    def say_zyusu(self):
-        print("コーラは100円です。ソーダは150円です。オレンジジュースは300円です。")
 
     def say_nomitaimono(self):
         print("コーラは100円です。ソーダは150円です。オレンジジュースは300円です。")
