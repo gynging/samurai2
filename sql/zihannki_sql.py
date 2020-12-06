@@ -123,7 +123,8 @@ class Zihan:
         while repetition3 == None:
             try:
                 addcount = int(input("何本追加しますか？"))
-                c.execute("INSERT INTO zihannkicount VALUES (?,?)",[self.newkind,addcount])
+                addprice = int(input("価格はいくらにしますか？"))
+                c.execute("INSERT INTO zihannkicount VALUES (?,?,?)",(self.newkind,addcount,addprice))
                 #c.execute("select * from zihannkicount where　drinkkind = ? ",(self.newkind,))
                 #l = c.fetchone()
                 #print("l = {}".format(l))
@@ -133,27 +134,36 @@ class Zihan:
                 print("数値で入力してください")
 
     def editdrink(self):
-        c.execute("select * from zihannkicount ")
+        c.execute("select * from zihannkicount")
         p = c.fetchall()
+        #print("p = {}".format(p))
         for i in p:
             print(i)
-        self.deletedrink = str(input("なんという飲み物を消去しますか？"))
-        c.execute("delete from zihannkicount where drinkkind = ?",(self.deletedrink,))
-        c.execute("select * from zihannkicount")
-        d = c.fetchall()
-        print(d)
+        while True:
+            self.deletedrink = str(input("なんという飲み物を消去しますか？"))
+            c.execute("select * from zihannkicount where drinkkind = ? ", (self.deletedrink,))
+            wantdelete = c.fetchone()
+            if wantdelete != None:
+                c.execute("delete from zihannkicount where drinkkind = ?",(self.deletedrink,))
+                c.execute("select * from zihannkicount")
+                d = c.fetchall()
+                print(d)
+                break
+            else:
+                print("選択した飲み物は存在しません。")
+
 
     def say_nomitaimono(self):
         c.execute("select * from zihannkicount")
         p = c.fetchall()
+        print("p = {}".format(p))
         for i in p:
-            print(i)
-
-        print("コーラは100円です。ソーダは150円です。オレンジジュースは300円です。")
+            print("{}:{}円".format(i(0),i(2))
         self.kin = str(input("飲みたいものを入力してください"))
+
         self.zyusu = {"コーラ":100,"ソーダ":150,"オレンジジュース":300}
 
-        if self.kin in self.zyusu:
+        if self.kin in i:
             c.execute("select * from zihannkicount where drinkkind = ? ",(self.kin,))
             d = c.fetchone()
             a = d[1]
