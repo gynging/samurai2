@@ -119,18 +119,36 @@ class Zihan:
 
     def addkind(self):
         self.newkind = str(input("なんという飲み物を追加しますか？"))
-        c.execute("insert into zihannkicount values ('self.newkind','10')")
-        c.execute("update zihannkicount　where drinkkind=?,(self.newkind)")
-        print(self.newkind + "を10本追加しました。")
+        repetition3 = None
+        while repetition3 == None:
+            try:
+                addcount = int(input("何本追加しますか？"))
+                c.execute("INSERT INTO zihannkicount VALUES (?,?)",[self.newkind,addcount])
+                #c.execute("select * from zihannkicount where　drinkkind = ? ",(self.newkind,))
+                #l = c.fetchone()
+                #print("l = {}".format(l))
+                print("{}を{}本追加しました。".format(self.newkind,addcount))
+                repetition3 = 1
+            except ValueError:
+                print("数値で入力してください")
 
     def editdrink(self):
+        c.execute("select * from zihannkicount ")
+        p = c.fetchall()
+        for i in p:
+            print(i)
         self.deletedrink = str(input("なんという飲み物を消去しますか？"))
-        c.execute("delete from zihannkicount where drinkkind = ?",(self.deletedrink))
+        c.execute("delete from zihannkicount where drinkkind = ?",(self.deletedrink,))
         c.execute("select * from zihannkicount")
         d = c.fetchall()
         print(d)
 
     def say_nomitaimono(self):
+        c.execute("select * from zihannkicount")
+        p = c.fetchall()
+        for i in p:
+            print(i)
+
         print("コーラは100円です。ソーダは150円です。オレンジジュースは300円です。")
         self.kin = str(input("飲みたいものを入力してください"))
         self.zyusu = {"コーラ":100,"ソーダ":150,"オレンジジュース":300}
