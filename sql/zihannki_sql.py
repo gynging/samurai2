@@ -21,7 +21,7 @@ c = dbfile2.cursor()
 class Zihan:
     def __init__(self):
         self.kin = None
-        self.zyusu = None
+        self.zyusu = {}
         self.kig = None
         self.oturi = None
         self.sagaku = None
@@ -154,24 +154,27 @@ class Zihan:
 
 
     def say_nomitaimono(self):
-        c.execute("select * from zihannkicount")
+
+        c.execute("select drinkkind,price from zihannkicount")
         p = c.fetchall()
-        print("p = {}".format(p))
-        for i in p:
-            print("{}:{}円".format(i(0),i(2))
-        self.kin = str(input("飲みたいものを入力してください"))
+        #print("p = {}".format(p))
 
-        self.zyusu = {"コーラ":100,"ソーダ":150,"オレンジジュース":300}
+        for redict in p:
+            self.zyusu[redict[0]] = redict[1]
+            print("{}:{}円".format(redict[0], redict[1]))
 
-        if self.kin in i:
+        self.kin = str(input("飲みたい物を入力してください"))
+
+        if self.kin in self.zyusu:
             c.execute("select * from zihannkicount where drinkkind = ? ",(self.kin,))
             d = c.fetchone()
             a = d[1]
             if a != 0:
                 self.kig = int(input("お金を投入してください"))
+                realprice = self.zyusu[self.kin]
                 try:
-                    if self.zyusu[self.kin] <= self.kig:
-                        self.oturi = self.kig - self.zyusu[self.kin]
+                    if int(realprice) <= self.kig:
+                        self.oturi = self.kig - int(realprice)
                         if self.oturi == 0:
                             print("お釣りは有りません")
                         else:
@@ -181,7 +184,7 @@ class Zihan:
                         c.execute("select * from mydrinkcount where drinkkind = ?", (self.kin,))
                         g = c.fetchone() 
                         h = int(g[1]) + 1
-                        c.execute("update mydrinkcount set buycount=? where drinkkind=?", (h, self.kin))
+                        c.execute("update mydrinkcount set buycount=? where drinkkind=?", (h, self.kin)) 
                         c.execute("select * from mydrinkcount where drinkkind = ?",(self.kin,))
                         i = c.fetchone()
                         print("{0}の購入数はこれで{1}個目です".format(self.kin,i[1]))
