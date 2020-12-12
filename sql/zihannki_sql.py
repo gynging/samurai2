@@ -164,7 +164,6 @@ class Zihan:
             print("{}:{}円".format(redict[0], redict[1]))
 
         self.kin = str(input("飲みたい物を入力してください"))
-        countdrink = int(input("何本購入しますか？"))
 
         if self.kin in self.zyusu:
             c.execute("select * from zihannkicount where drinkkind = ? ",(self.kin,))
@@ -173,29 +172,37 @@ class Zihan:
             a = d[1]
             if a != 0:
                 self.kig = int(input("お金を投入してください"))
-                realprice = int(self.zyusu[self.kin]) * int(countdrink)
-                #print("realprice = {}".format(realprice))
-                try:
-                    if int(realprice) <= self.kig:
-                        self.oturi = self.kig - int(realprice)
-                        if self.oturi == 0:
-                            print("お釣りは有りません")
+                print("{}の在庫数は{}個です。".format(self.kin,a))
+                countdrink = int(input("何本購入しますか？"))
+
+                if a >= int(countdrink):
+
+                    realprice = int(self.zyusu[self.kin]) * int(countdrink)
+                    #print("realprice = {}".format(realprice))
+                    try:
+                        if int(realprice) <= self.kig:
+                            self.oturi = self.kig - int(realprice)
+                            if self.oturi == 0:
+                                print("お釣りは有りません")
+                            else:
+                                print("お釣りは{}".format(self.oturi))
+                            f = int(d[1]) - int(countdrink)
+                            c.execute("update zihannkicount set buycount=? where drinkkind=?", (f, self.kin))
+                            c.execute("select * from mydrinkcount where drinkkind = ?", (self.kin,))
+                            g = c.fetchone()
+                            h = int(g[1]) + int(countdrink)
+                            c.execute("update mydrinkcount set buycount=? where drinkkind=?", (h, self.kin))
+                            c.execute("select * from mydrinkcount where drinkkind = ?",(self.kin,))
+                            i = c.fetchone()
+                            print("{0}の購入数はこれで{1}個目です".format(self.kin,i[1]))
                         else:
-                            print("お釣りは{}".format(self.oturi))
-                        f = int(d[1]) - int(countdrink)
-                        c.execute("update zihannkicount set buycount=? where drinkkind=?", (f, self.kin))
-                        c.execute("select * from mydrinkcount where drinkkind = ?", (self.kin,))
-                        g = c.fetchone() 
-                        h = int(g[1]) + int(countdrink)
-                        c.execute("update mydrinkcount set buycount=? where drinkkind=?", (h, self.kin)) 
-                        c.execute("select * from mydrinkcount where drinkkind = ?",(self.kin,))
-                        i = c.fetchone()
-                        print("{0}の購入数はこれで{1}個目です".format(self.kin,i[1]))
-                    else:
-                        self.sagaku = int(realprice) - self.kig
-                        print("お金が{}円足りません。".format(self.sagaku))
-                except SystemError:
-                    print("数値で入力してください")
+                            self.sagaku = int(realprice) - self.kig
+                            print("お金が{}円足りません。".format(self.sagaku))
+                    except SystemError:
+                        print("数値で入力してください")
+
+                else:
+                    print("在庫数が足りません。")
             else:
                 print("在庫がありません")
         else:
