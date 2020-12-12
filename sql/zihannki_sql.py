@@ -168,7 +168,7 @@ class Zihan:
         if self.kin in self.zyusu:
             c.execute("select * from zihannkicount where drinkkind = ? ",(self.kin,))
             d = c.fetchone()
-            print("d = {}".format(d))
+            #print("d = {}".format(d))
             a = d[1]
 
             if a != 0:
