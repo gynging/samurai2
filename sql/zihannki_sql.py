@@ -168,12 +168,18 @@ class Zihan:
         if self.kin in self.zyusu:
             c.execute("select * from zihannkicount where drinkkind = ? ",(self.kin,))
             d = c.fetchone()
-            #print("d = {}".format(d))
+            print("d = {}".format(d))
             a = d[1]
+
             if a != 0:
-                self.kig = int(input("お金を投入してください"))
+
                 print("{}の在庫数は{}個です。".format(self.kin,a))
+                b = int(d[2])
                 countdrink = int(input("何本購入しますか？"))
+                someprice = b * countdrink
+                print("合計金額は{}円になります。".format(someprice))
+
+                self.kig = int(input("お金を投入してください"))
 
                 if a >= int(countdrink):
 
