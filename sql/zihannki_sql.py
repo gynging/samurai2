@@ -161,6 +161,7 @@ class Zihan:
 
         for redict in p:
             self.zyusu[redict[0]] = redict[1]
+            #print("これはデバック{}".format(self.zyusu))
             print("{}:{}円".format(redict[0], redict[1]))
 
         self.kin = str(input("飲みたい物を入力してください"))
@@ -169,7 +170,7 @@ class Zihan:
             c.execute("select * from zihannkicount where drinkkind = ? ",(self.kin,))
             d = c.fetchone()
             #print("d = {}".format(d))
-            a = d[1]
+            a = int(d[1])
 
             if a != 0:
 
@@ -181,7 +182,7 @@ class Zihan:
 
                 self.kig = int(input("お金を投入してください"))
 
-                if a >= int(countdrink):
+                if a >= countdrink:
 
                     realprice = int(self.zyusu[self.kin]) * int(countdrink)
                     #print("realprice = {}".format(realprice))
