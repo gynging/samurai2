@@ -64,15 +64,15 @@ class Zihan:
 
                 if self.editcommnd == 1:
                     zihann.addrink()
-                    zihann.end()
+                    zihann.menu()
 
                 elif self.editcommnd == 2:
                     zihann.addkind()
-                    zihann.end()
+                    zihann.menu()
 
                 elif self.editcommnd == 3:
                     zihann.editdrink()
-                    zihann.end()
+                    zihann.menu()
 
                 else:
                         continue
@@ -88,7 +88,6 @@ class Zihan:
         elif self.menuback == "no":
             self.control1 = 1
             print("お疲れ様でした。")
-
 
     def addrink(self):
         c.execute("select * from zihannkicount")
@@ -176,16 +175,16 @@ class Zihan:
 
                 print("{}の在庫数は{}個です。".format(self.kin,a))
                 b = int(d[2])
+
                 countdrink = int(input("何本購入しますか？"))
-                someprice = b * countdrink
-                print("合計金額は{}円になります。".format(someprice))
-
-                self.kig = int(input("お金を投入してください"))
-
                 if a >= countdrink:
+                    someprice = b * countdrink
+                    print("合計金額は{}円になります。".format(someprice))
+
+                    self.kig = int(input("お金を投入してください"))
 
                     realprice = int(self.zyusu[self.kin]) * int(countdrink)
-                    #print("realprice = {}".format(realprice))
+                        #print("realprice = {}".format(realprice))
                     try:
                         if int(realprice) <= self.kig:
                             self.oturi = self.kig - int(realprice)
@@ -202,11 +201,12 @@ class Zihan:
                             c.execute("select * from mydrinkcount where drinkkind = ?",(self.kin,))
                             i = c.fetchone()
                             print("{0}の購入数はこれで{1}個目です".format(self.kin,i[1]))
+
                         else:
                             self.sagaku = int(realprice) - self.kig
                             print("お金が{}円足りません。".format(self.sagaku))
                     except SystemError:
-                        print("数値で入力してください")
+                            print("数値で入力してください")
 
                 else:
                     print("在庫数が足りません。")
@@ -232,6 +232,8 @@ class Zihan:
             elif self.yesno == "no":
                 print("お疲れ様でした")
                 self.modoru = 1
+                zihann.menu()
+
 
 
             else:
