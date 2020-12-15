@@ -175,41 +175,46 @@ class Zihan:
 
                 print("{}の在庫数は{}個です。".format(self.kin,a))
                 b = int(d[2])
-
-                countdrink = int(input("何本購入しますか？"))
-                if a >= countdrink:
-                    someprice = b * countdrink
-                    print("合計金額は{}円になります。".format(someprice))
-
-                    self.kig = int(input("お金を投入してください"))
-
-                    realprice = int(self.zyusu[self.kin]) * int(countdrink)
-                        #print("realprice = {}".format(realprice))
+                repeat = 1
+                while repeat == None:
                     try:
-                        if int(realprice) <= self.kig:
-                            self.oturi = self.kig - int(realprice)
-                            if self.oturi == 0:
-                                print("お釣りは有りません")
+                        countdrink = int(input("何本購入しますか？"))
+                        if a >= countdrink:
+                            someprice = b * countdrink
+                            print("合計金額は{}円になります。".format(someprice))
+                            repeat = 1
+                    except SyntaxError:
+                        print("数値で入力してください。")
+
+                        self.kig = int(input("お金を投入してください"))
+
+                        realprice = int(self.zyusu[self.kin]) * int(countdrink)
+                            #print("realprice = {}".format(realprice))
+                        try:
+                            if int(realprice) <= self.kig:
+                                self.oturi = self.kig - int(realprice)
+                                if self.oturi == 0:
+                                    print("お釣りは有りません")
+                                else:
+                                    print("お釣りは{}".format(self.oturi))
+                                f = int(d[1]) - int(countdrink)
+                                c.execute("update zihannkicount set buycount=? where drinkkind=?", (f, self.kin))
+                                c.execute("select * from mydrinkcount where drinkkind = ?", (self.kin,))
+                                g = c.fetchone()
+                                h = int(g[1]) + int(countdrink)
+                                c.execute("update mydrinkcount set buycount=? where drinkkind=?", (h, self.kin))
+                                c.execute("select * from mydrinkcount where drinkkind = ?",(self.kin,))
+                                i = c.fetchone()
+                                print("{0}の購入数はこれで{1}個目です".format(self.kin,i[1]))
+
                             else:
-                                print("お釣りは{}".format(self.oturi))
-                            f = int(d[1]) - int(countdrink)
-                            c.execute("update zihannkicount set buycount=? where drinkkind=?", (f, self.kin))
-                            c.execute("select * from mydrinkcount where drinkkind = ?", (self.kin,))
-                            g = c.fetchone()
-                            h = int(g[1]) + int(countdrink)
-                            c.execute("update mydrinkcount set buycount=? where drinkkind=?", (h, self.kin))
-                            c.execute("select * from mydrinkcount where drinkkind = ?",(self.kin,))
-                            i = c.fetchone()
-                            print("{0}の購入数はこれで{1}個目です".format(self.kin,i[1]))
+                                self.sagaku = int(realprice) - self.kig
+                                print("お金が{}円足りません。".format(self.sagaku))
+                        except SystemError:
+                                print("数値で入力してください")
 
-                        else:
-                            self.sagaku = int(realprice) - self.kig
-                            print("お金が{}円足りません。".format(self.sagaku))
-                    except SystemError:
-                            print("数値で入力してください")
-
-                else:
-                    print("在庫数が足りません。")
+                    else:
+                        print("在庫数が足りません。")
             else:
                 print("在庫がありません")
         else:
