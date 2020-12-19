@@ -97,15 +97,7 @@ class Zihan:
             else:
                 print("1か2か3で選んで下さい。")
 
-    def end(self):
-        self.menuback = str(input("menuに戻りますか？yesかnoで答えてください"))
 
-        if self.menuback == "yes":
-                zihann.menu()
-
-        elif self.menuback == "no":
-            self.control1 = 1
-            print("お疲れ様でした。")
 
     def addrink(self):
         c.execute("select * from zihannkicount")
@@ -293,6 +285,7 @@ class Zihan:
                 break
             elif self.endmessage == "no":
                 zihann.menu()
+                break
             else:
                 print("yesかnoで入力してください。")
 
