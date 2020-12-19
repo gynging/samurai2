@@ -142,6 +142,7 @@ class Zihan:
                 addcount = int(input("何本追加しますか？"))
                 addprice = int(input("価格はいくらにしますか？"))
                 c.execute("INSERT INTO zihannkicount VALUES (?,?,?)",(self.newkind,addcount,addprice))
+                c.execute("INSERT INTO mydrinkcount VALUES (?,?)", (self.newkind,0))
                 #c.execute("select * from zihannkicount where　drinkkind = ? ",(self.newkind,))
                 #l = c.fetchone()
                 #print("l = {}".format(l))
@@ -229,6 +230,17 @@ class Zihan:
                     self.oturi = self.kig - self.realprice
                     if self.oturi == 0:
                         print("お釣りは有りません")
+                        self.f = int(self.d[1]) - int(self.countdrink)
+                        c.execute("update zihannkicount set buycount=? where drinkkind=?", (self.f, self.kin))
+                        c.execute("select * from mydrinkcount where drinkkind = ?", (self.kin,))
+                        self.g = c.fetchone()
+                        #print("これはデバックself.g = {}".format(self.g))
+                        self.h = int(self.g[1]) + int(self.countdrink)
+                        c.execute("update mydrinkcount set buycount=? where drinkkind=?", (self.h, self.kin))
+                        c.execute("select * from mydrinkcount where drinkkind = ?", (self.kin,))
+                        self.i = c.fetchone()
+                        print("{0}の購入数はこれで{1}個目です".format(self.kin, self.i[1]))
+                        break
                     else:
                         print("お釣りは{}".format(self.oturi))
                         self.f = int(self.d[1]) - int(self.countdrink)
