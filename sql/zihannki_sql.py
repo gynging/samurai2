@@ -239,7 +239,7 @@ class Zihan:
                         c.execute("update mydrinkcount set buycount=? where drinkkind=?", (self.h, self.kin))
                         c.execute("select * from mydrinkcount where drinkkind = ?", (self.kin,))
                         self.i = c.fetchone()
-                        print("{0}の購入数はこれで{1}個目です".format(self.kin, self.i[1]))
+                        print("{0}の購入数はこれで{1}本目です".format(self.kin, self.i[1]))
                         break
                     else:
                         print("お釣りは{}".format(self.oturi))
@@ -285,8 +285,9 @@ class Zihan:
 
 
     def ending(self):
-        self.endmessage = input("終了しますか？yes or no")
         while True:
+            self.endmessage = input("終了しますか？yes or no")
+
             if self.endmessage == "yes":
                 print("またのご利用お待ちしております。")
                 break
@@ -294,7 +295,6 @@ class Zihan:
                 zihann.menu()
             else:
                 print("yesかnoで入力してください。")
-
 
 
 
