@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+'''
 shakkin = int(input('借金> '))
 riritsu = float(input('年利率(%)> '))
 hensai =  int(input('返済額> '))
@@ -15,4 +16,8 @@ shakkin = shakkin*(1 + riritsu/12/100)
 total += shakkin
 print(str(month)+'月: 返済額',int(shakkin),'円','これで完済。','返済総額: ',\
 int(total),'円',sep=' ')
+'''
 
+def fung():
+    words = "ああsっdgcfjgfjfjgjnkgy\ngigkyellowpig4869儀おうふh" #\nで一行で書いても改行できる。
+fung()

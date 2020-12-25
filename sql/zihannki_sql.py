@@ -56,46 +56,50 @@ class Zihan:
         self.sagaku2 = None
         self.endmessage = None
 
+
     def menu(self):
         self.menukind = ["1:自動販売機飲み物購入機能", "2:販売機編集","3:終了する"]
         for self.menulist in self.menukind:
             print(self.menulist)
 
         while self.control1 == None:
-            self.choicemenu = int(input("どちらかを数字で選んで下さい"))
-            #print("debug self.choicemenu = {}".format(self.choicemenu))
-            if self.choicemenu == 1:
-                zihann.say_nomitaimono()
-                self.control1 = 1
+            try:
+                self.choicemenu = int(input("どちらかを数字で選んで下さい"))
+                #print("debug self.choicemenu = {}".format(self.choicemenu))
+                if self.choicemenu == 1:
+                    zihann.say_nomitaimono()
+                    self.control1 = 1
 
-            elif self.choicemenu == 2:
-                self.editlist = ["1 自動販売機飲み物個数追加機能", "2 自動販売機飲み物種類追加機能", "3 自動販売機飲み物種類削除機能"]
-                for self.editlist2 in self.editlist:
-                    print(self.editlist2)
+                elif self.choicemenu == 2:
+                    self.editlist = ["1 自動販売機飲み物個数追加機能", "2 自動販売機飲み物種類追加機能", "3 自動販売機飲み物種類削除機能"]
+                    for self.editlist2 in self.editlist:
+                        print(self.editlist2)
 
-                self.editcommnd = int(input("1か2か3で選んで下さい"))
+                    self.editcommnd = int(input("1か2か3で選んで下さい"))
 
-                if self.editcommnd == 1:
-                    zihann.addrink()
-                    zihann.menu()
+                    if self.editcommnd == 1:
+                        zihann.addrink()
+                        zihann.menu()
 
-                elif self.editcommnd == 2:
-                    zihann.addkind()
-                    zihann.menu()
+                    elif self.editcommnd == 2:
+                        zihann.addkind()
+                        zihann.menu()
 
-                elif self.editcommnd == 3:
-                    zihann.editdrink()
-                    zihann.menu()
+                    elif self.editcommnd == 3:
+                        zihann.editdrink()
+                        zihann.menu()
+
+                    else:
+                            continue
+
+                elif self.choicemenu == 3:
+                    zihann.ending()
+                    self.control1 = 1
 
                 else:
-                        continue
-
-            elif self.choicemenu == 3:
-                zihann.ending()
-                self.control1 = 1
-
-            else:
-                print("1か2か3で選んで下さい。")
+                    print("1か2か3で選んで下さい。")
+            except ValueError:
+                print("数値で入力してください。")
 
 
 
